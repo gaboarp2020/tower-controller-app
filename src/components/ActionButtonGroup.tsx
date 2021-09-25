@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import { GestureResponderEvent, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { atom, useRecoilState } from "recoil";
 
 import { ActionButton } from ".";
+import { elevationApi, inclinationApi } from '../api/action';
+import stopApi from '../api/stop';
 
 export const actionState = atom({
   key: "actionState",
@@ -30,63 +32,95 @@ export const resetStopwatchState = atom({
 });
 
 const ActionButtonGroup = () => {
+  const DIRECTION_UP = 1;
+  const DIRECTION_DOWN = 2;
+
   const [upActionButtonState, setUpActionButtonState] = useState<boolean>(false);
   const [downActionButtonState, setDownActionButtonState] = useState<boolean>(false);
   const [frontActionButtonState, setFrontActionButtonState] = useState<boolean>(false);
   const [backActionButtonState, setBackActionButtonState] = useState<boolean>(false);
   const [stopActionButtonDisabledState, setStopActionButtonDisabledState] = useState<boolean>(true)
 
+  const [upIconColorState, setUpIconColorState] = useState<string>('grey');
+  const [downIconColorState, setDownIconColorState] = useState<string>('grey')
+  const [frontIconColorState, setFrontIconColorState] = useState<string>('grey');
+  const [backIconColorState, setBackIconColorState] = useState<string>('grey');
+  const [stopIconColorState, setStopIconColorState] = useState<string>('lightgrey');
+
   const [actionName, setActionName] = useRecoilState(actionState);
 
   const [isStopwatchStart, setIsStopwatchStart] = useRecoilState(isStopwatchStartState);
   const [resetStopwatch, setResetStopwatch] = useRecoilState(resetStopwatchState);
 
-  const handleAction = (actionName: string, setStateCallBack: CallableFunction) => {
+  const handleAction = (actionName: string, setActionStateCallBack: CallableFunction, setIconStateCallBack: CallableFunction) => {
     startTimer();
-    setDisabledAllActionButton(true);
+    setDisabledAllActionButton(true, 'lightgrey');
     setStopActionButtonDisabledState(false);
-    setStateCallBack(false);
+    setStopIconColorState('grey');
+    setActionStateCallBack(false);
+    setIconStateCallBack('grey');
     setActionName(actionName);
   };
 
-  const handleUpAction = (event: GestureResponderEvent): void => {
-    handleAction('up', setUpActionButtonState);
-
-    // TODO: API Callback?
+  const handleUpAction = (): void => {
+    try {      
+      // await elevationApi.set(DIRECTION_UP);
+      handleAction('up', setUpActionButtonState, setUpIconColorState);
+    } catch (error) {
+      // TODO: Error handler
+    }
   }
 
-  const handleDownAction = (event: GestureResponderEvent): void => {
-    handleAction('down', setDownActionButtonState);
-
-    // TODO: API Callback?
+  const handleDownAction = (): void => {
+    try {      
+      // await elevationApi.set(DIRECTION_DOWN);
+      handleAction('down', setDownActionButtonState, setDownIconColorState);
+    } catch (error) {
+      // TODO: Error handler
+    }
   }
 
-  const handleFrontAction = (event: GestureResponderEvent): void => {
-    handleAction('front', setFrontActionButtonState);
-
-    // TODO: API Callback?
+  const handleFrontAction = (): void => {
+    try {      
+      // await inclinationApi.set(DIRECTION_UP);
+      handleAction('front', setFrontActionButtonState, setFrontIconColorState);
+    } catch (error) {
+      // TODO: Error handler
+    }
   }
 
-  const handleBackAction = (event: GestureResponderEvent): void => {
-    handleAction('back', setBackActionButtonState);
-
-    // TODO: API Callback?
+  const handleBackAction = (): void => {
+    try {      
+      // await inclinationApi.set(DIRECTION_DOWN);
+      handleAction('back', setBackActionButtonState, setBackIconColorState);
+    } catch (error) {
+      // TODO: Error handler
+    }
   }
 
-  const handleStopAction = (event: GestureResponderEvent): void => {
-    resetTimer();
-    setDisabledAllActionButton(false);
-    setStopActionButtonDisabledState(true);
-    setActionName('stop');
-    
-    // TODO: API Callback?
+  const handleStopAction = (): void => {
+    try {      
+      // await stopApi.get();
+      resetTimer();
+      setDisabledAllActionButton(false, 'grey');
+      setStopActionButtonDisabledState(true);
+      setStopIconColorState('lightgrey');
+      setActionName('stop');
+    } catch (error) {
+      // TODO: Error handler
+    }
   }
 
-  const setDisabledAllActionButton = (disabled: boolean = false) => {
+  const setDisabledAllActionButton = (disabled: boolean = false, color) => {
     setUpActionButtonState(disabled);
     setDownActionButtonState(disabled);
     setFrontActionButtonState(disabled);
     setBackActionButtonState(disabled);
+
+    setUpIconColorState(color);
+    setDownIconColorState(color);
+    setFrontIconColorState(color);
+    setBackIconColorState(color);
   }
 
   const startTimer = () => {
@@ -105,6 +139,7 @@ const ActionButtonGroup = () => {
         <View style={styles.row}>
           <ActionButton
             action="up"
+            iconColor={upIconColorState}
             disabled={upActionButtonState}
             onPress={handleUpAction}
           />
@@ -113,16 +148,19 @@ const ActionButtonGroup = () => {
         <View style={styles.row}>
           <ActionButton
             action="front"
+            iconColor={frontIconColorState}
             disabled={frontActionButtonState}
             onPress={handleFrontAction}
           />
           <ActionButton
             action="stop"
+            iconColor={stopIconColorState}
             disabled={stopActionButtonDisabledState}
             onPress={handleStopAction}
           />
           <ActionButton
             action="back"
+            iconColor={backIconColorState}
             disabled={backActionButtonState}
             onPress={handleBackAction}
           />
@@ -131,6 +169,7 @@ const ActionButtonGroup = () => {
         <View style={styles.row}>
           <ActionButton
             action="down"
+            iconColor={downIconColorState}
             disabled={downActionButtonState}
             onPress={handleDownAction}
           />
