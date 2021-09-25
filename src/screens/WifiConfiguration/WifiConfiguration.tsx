@@ -1,19 +1,18 @@
 import React, { useState } from 'react';
 import {
-  ColorValue,
   StyleSheet,
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
 
 import constants from '../../../constants';
+import WifiApi from '../../api/wifi';
 import {
   Button,
   Icon,
   Input,
   Screen,
   Spinner,
-  Text,
 } from '../../components';
 import { TouchableIcon } from '../../components/Icon';
 import { InputStatus } from '../../components/Input';
@@ -28,10 +27,15 @@ const WifiConfigurationScreen = ({
   route,
 }: ScreenProps<AppRoutes.WIFI_CONFIGURATION>) => {
 
-  const [captionMessage, setCaptionMessage] = useState<string>('');
-  const [inputStatus, setInputStatus] = useState<InputStatus>();
+  const [ssidCaptionMessage, setSsidCaptionMessage] = useState<string>('');
+  const [passwordCaptionMessage, setPasswordCaptionMessage] = useState<string>('');
+  const [confirmPasswordCaptionMessage, setConfirmPasswordCaptionMessage] = useState<string>('');
+  const [inputSsidStatus, setInputSsidStatus] = useState<InputStatus>();
+  const [inputPasswordStatus, setInputPasswordStatus] = useState<InputStatus>();
+  const [inputConfirmPasswordStatus, setInputConfirmPasswordStatus] = useState<InputStatus>();
   const [secureTextEntry, setSecureTextEntry] = useState<boolean>(true);
   const [passwordValue, setPasswordValue] = useState<string>('');
+  const [confirmPasswordValue, setConfirmPasswordValue] = useState<string>('');
   const [ssidValue, setSsidValue] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -46,16 +50,27 @@ const WifiConfigurationScreen = ({
   );
 
   const resetInput = () => {
-    setCaptionMessage('');
-    setInputStatus(undefined);
+    setSsidCaptionMessage('');
+    setPasswordCaptionMessage('');
+    setConfirmPasswordCaptionMessage('');
+    setInputSsidStatus(undefined);
+    setInputPasswordStatus(undefined);
+    setInputConfirmPasswordStatus(undefined);
+    setPasswordValue('');
+    setConfirmPasswordValue('');
+    setSsidValue('');
   };
 
   const updateInput = ({
     captionText,
     status = undefined,
+    setCaptionMessage,
+    setInputStatus
   }: {
     captionText: string;
     status?: InputStatus;
+    setCaptionMessage: CallableFunction;
+    setInputStatus: CallableFunction;
   }) => {
     setCaptionMessage(captionText);
     setInputStatus(status);
@@ -67,35 +82,71 @@ const WifiConfigurationScreen = ({
 
   const handlePasswordChange = (nextValue: string) => {
     setPasswordValue(nextValue);
-    if (inputStatus !== undefined) {
+    if (inputPasswordStatus !== undefined) {
+      resetInput();
+    }
+  };
+
+  const handleConfirmPasswordChange = (nextValue: string) => {
+    setConfirmPasswordValue(nextValue);
+    if (inputConfirmPasswordStatus !== undefined) {
       resetInput();
     }
   };
 
   const handleSsidChange = (nextValue: string) => {
     setSsidValue(nextValue);
-    if (inputStatus !== undefined) {
+    if (inputSsidStatus !== undefined) {
       resetInput();
     }
   };
 
-  const handleSubmit = (type) => async () => {
-    if (ssidValue.length > 0 && passwordValue.length > 0) {
-      try {
-        // await OffsetApi.set(passwordValue, type);
-
-      } catch (error) {
-        updateInput({
-          captionText: 'Wrong password',
-          status: 'danger',
-        });
-      }
-    } else {
+  const handleSubmit = () => async () => {
+    if (ssidValue.length === 0) {
       updateInput({
-        captionText: 'The password is required',
+        captionText: 'Wrong password',
         status: 'danger',
+        setSsidCaptionMessage,
+        setInputSsidStatus
+      });
+
+      return;
+    }
+
+    if (passwordValue.length === 0) {
+      updateInput({
+        captionText: 'Wrong password',
+        status: 'danger',
+        setPasswordCaptionMessage,
+        setInputPasswordStatus
+      });
+
+      return;
+    }
+
+    if (passwordValue !== confirmPasswordValue) {
+      updateInput({
+        captionText: 'Wrong password',
+        status: 'danger',
+        setConfirmPasswordCaptionMessage,
+        setInputConfirmPasswordStatus
+      });
+
+      return;
+    }
+    
+    try {
+      // await WifiApi.set(ssidValue, passwordValue);
+
+    } catch (error) {
+      updateInput({
+        captionText: 'Wrong password',
+        status: 'danger',
+        setPasswordCaptionMessage,
+        setInputPasswordStatus
       });
     }
+    
   };
 
   const LoadingIndicator = (props) => (
@@ -108,49 +159,63 @@ const WifiConfigurationScreen = ({
     <Screen>
       <Screen.Container>
         <View style={styles.container}>
-          <Input
-            caption={captionMessage}
-            label="SSID"
-            onChangeText={handleSsidChange}
-            placeholder="Enter a new SSID"
-            status={inputStatus}
-            style={styles.input}
-            value={ssidValue}
-          />
-          <Input
-            accessoryRight={eyeIcon}
-            caption={captionMessage}
-            label="Password"
-            onChangeText={handlePasswordChange}
-            placeholder="Enter a new password"
-            secureTextEntry={secureTextEntry}
-            status={inputStatus}
-            style={styles.input}
-            value={passwordValue}
-          />
-          <Input
-            accessoryRight={eyeIcon}
-            caption={captionMessage}
-            label="Confirm Password"
-            onChangeText={handlePasswordChange}
-            placeholder="Confirm the new password"
-            secureTextEntry={secureTextEntry}
-            status={inputStatus}
-            style={styles.input}
-            value={passwordValue}
-          />
-          <TouchableWithoutFeedback
-            onPress={handleSubmit('slave')}
-          >
-            <Button
-              accessoryLeft={isLoading && LoadingIndicator}
-              appearance='outline'
-              style={styles.button}
+          <View>
+            <Input
+              caption={ssidCaptionMessage}
+              label="SSID"
+              onChangeText={handleSsidChange}
+              placeholder="Ingrese un nuevo SSID"
+              status={inputSsidStatus}
+              style={styles.input}
+              value={ssidValue}
+            />
+            <Input
+              accessoryRight={eyeIcon}
+              caption={passwordCaptionMessage}
+              label="Contraseña"
+              onChangeText={handlePasswordChange}
+              placeholder="Ingrese una nueva contraseña"
+              secureTextEntry={secureTextEntry}
+              status={inputPasswordStatus}
+              style={styles.input}
+              value={passwordValue}
+            />
+            <Input
+              accessoryRight={eyeIcon}
+              caption={confirmPasswordCaptionMessage}
+              label="Confirmar Contraseña"
+              onChangeText={handleConfirmPasswordChange}
+              placeholder="Repita la contraseña"
+              secureTextEntry={secureTextEntry}
+              status={inputConfirmPasswordStatus}
+              style={styles.input}
+              value={confirmPasswordValue}
+            />
+          </View>
+
+          <View>
+            <TouchableWithoutFeedback
               onPress={handleSubmit}
-              >
-                SAVE
-            </Button>
-          </TouchableWithoutFeedback>
+            >
+              <Button
+                accessoryLeft={isLoading && LoadingIndicator}
+                appearance='outline'
+                style={styles.button}
+                onPress={handleSubmit}
+              >SAVE</Button>
+            </TouchableWithoutFeedback>
+            <TouchableWithoutFeedback
+              onPress={handleCancel}
+            >
+              <Button
+                accessoryLeft={isLoading && LoadingIndicator}
+                status='basic'
+                appearance='outline'
+                style={styles.button}
+                onPress={handleCancel}
+              >RESET</Button>
+            </TouchableWithoutFeedback>
+          </View>
         </View>
       </Screen.Container>
     </Screen>
@@ -159,15 +224,15 @@ const WifiConfigurationScreen = ({
 
 const styles = StyleSheet.create({
   button: {
-    margin: 2,
+    width: FORM_SIZE/2,
+    marginTop: 18
   },
   container: {
     marginLeft: "auto",
     marginRight: "auto",
-    width: FORM_SIZE/2,
     alignItems: 'center',
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'space-evenly',
   },
   input: {
     marginBottom: 20,
