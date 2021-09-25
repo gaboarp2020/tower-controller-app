@@ -22,52 +22,58 @@ export interface PropTypes extends TouchableOpacityProps {
     | 'front'
     | 'back'
     | 'stop';
+  iconColor: string;
 }
 
 const ActionButton = ({
   action,
+  iconColor,
   onPress,
   ...props
 }: PropTypes): React.ReactElement => {
 
-  const ActionIcon = (action: string) => {
+  const ActionIcon = ({action, iconColor}: {action: string, iconColor: string}) => {
     if (action === 'up') {
-      return UpArrowIcon();
+      return UpArrowIcon(iconColor);
     }
     
     if (action === 'down') {
-      return DownArrowIcon();
+      return DownArrowIcon(iconColor);
     }
     
     if (action === 'front') {
-      return FrontArrowIcon();
+      return FrontArrowIcon(iconColor);
     }
     
     if (action === 'back') {
-      return BackArrowIcon();
+      return BackArrowIcon(iconColor);
     }
 
-    return StopIcon();
+    return StopIcon(iconColor);
   };
 
-  const UpArrowIcon = () => (
-    Icon.UpArrow
+  const actionIconStyle = {
+    marginRigth: 10,
+  };
+
+  const UpArrowIcon = (iconColor: string) => (
+    <Icon.UpArrow fill={iconColor} style={actionIconStyle} />
   );
 
-  const DownArrowIcon = () => (
-    Icon.DownArrow
+  const DownArrowIcon = (iconColor: string) => (
+    <Icon.DownArrow fill={iconColor} style={actionIconStyle} />
   );
 
-  const FrontArrowIcon = () => (
-    Icon.FrontArrow
+  const FrontArrowIcon = (iconColor: string) => (
+    <Icon.FrontArrow fill={iconColor} style={actionIconStyle} />
   );
 
-  const BackArrowIcon = () => (
-    Icon.BackArrow
+  const BackArrowIcon = (iconColor: string) => (
+    <Icon.BackArrow fill={iconColor} style={actionIconStyle} />
   );
 
-  const StopIcon = () => (
-    Icon.Stop
+  const StopIcon = (iconColor: string) => (
+    <Icon.Stop fill={iconColor} style={actionIconStyle} />
   );
 
   return (
@@ -82,7 +88,7 @@ const ActionButton = ({
       style={styles.roundButton}
       {...props}
     >
-      {ActionIcon(action)}
+      {ActionIcon({action, iconColor})}
     </Button>
   );
 };
