@@ -1,58 +1,72 @@
-import React, { useState } from "react";
-import { StyleSheet, View } from "react-native";
-import { atom, useRecoilState } from "recoil";
+import React, {useState} from 'react';
+import {StyleSheet, View} from 'react-native';
+import {atom, useRecoilState} from 'recoil';
 
-import { ActionButton } from ".";
-import { elevationApi, inclinationApi } from '../api/action';
+import {ActionButton} from '.';
+import {elevationApi, inclinationApi} from '../api/action';
 import stopApi from '../api/stop';
 
 export const actionState = atom({
-  key: "actionState",
   default: 'stop',
+  key: 'actionState',
 });
 export const isTimerStartState = atom({
-  key: "isTimerStartState",
   default: false,
+  key: 'isTimerStartState',
 });
 export const isStopwatchStartState = atom({
-  key: "isStopwatchStartState",
   default: false,
+  key: 'isStopwatchStartState',
 });
 export const timerDurationState = atom({
-  key: "timerDurationState",
   default: 90000,
+  key: 'timerDurationState',
 });
 export const resetTimerState = atom({
-  key: "resetTimerState",
   default: false,
+  key: 'resetTimerState',
 });
 export const resetStopwatchState = atom({
-  key: "resetStopwatchState",
   default: false,
+  key: 'resetStopwatchState',
 });
 
 const ActionButtonGroup = () => {
   const DIRECTION_UP = 1;
   const DIRECTION_DOWN = 2;
 
-  const [upActionButtonState, setUpActionButtonState] = useState<boolean>(false);
-  const [downActionButtonState, setDownActionButtonState] = useState<boolean>(false);
-  const [frontActionButtonState, setFrontActionButtonState] = useState<boolean>(false);
-  const [backActionButtonState, setBackActionButtonState] = useState<boolean>(false);
-  const [stopActionButtonDisabledState, setStopActionButtonDisabledState] = useState<boolean>(true)
+  const [upActionButtonState, setUpActionButtonState] =
+    useState<boolean>(false);
+  const [downActionButtonState, setDownActionButtonState] =
+    useState<boolean>(false);
+  const [frontActionButtonState, setFrontActionButtonState] =
+    useState<boolean>(false);
+  const [backActionButtonState, setBackActionButtonState] =
+    useState<boolean>(false);
+  const [stopActionButtonDisabledState, setStopActionButtonDisabledState] =
+    useState<boolean>(true);
 
   const [upIconColorState, setUpIconColorState] = useState<string>('grey');
-  const [downIconColorState, setDownIconColorState] = useState<string>('grey')
-  const [frontIconColorState, setFrontIconColorState] = useState<string>('grey');
+  const [downIconColorState, setDownIconColorState] = useState<string>('grey');
+  const [frontIconColorState, setFrontIconColorState] =
+    useState<string>('grey');
   const [backIconColorState, setBackIconColorState] = useState<string>('grey');
-  const [stopIconColorState, setStopIconColorState] = useState<string>('lightgrey');
+  const [stopIconColorState, setStopIconColorState] =
+    useState<string>('lightgrey');
 
-  const [actionName, setActionName] = useRecoilState(actionState);
+  const [_actionName, setActionName] = useRecoilState(actionState);
 
-  const [isStopwatchStart, setIsStopwatchStart] = useRecoilState(isStopwatchStartState);
-  const [resetStopwatch, setResetStopwatch] = useRecoilState(resetStopwatchState);
+  const [_isStopwatchStart, setIsStopwatchStart] = useRecoilState(
+    isStopwatchStartState,
+  );
+  const [_resetStopwatch, setResetStopwatch] =
+    useRecoilState(resetStopwatchState);
 
-  const handleAction = (actionName: string, setActionStateCallBack: CallableFunction, setIconStateCallBack: CallableFunction) => {
+  const handleAction = (
+    actionName: string,
+    setActionStateCallBack: CallableFunction,
+    setIconStateCallBack: CallableFunction,
+  ) => {
     startTimer();
     setDisabledAllActionButton(true, 'lightgrey');
     setStopActionButtonDisabledState(false);
@@ -62,45 +76,45 @@ const ActionButtonGroup = () => {
     setActionName(actionName);
   };
 
-  const handleUpAction = (): void => {
-    try {      
-      // await elevationApi.set(DIRECTION_UP);
+  const handleUpAction = async (): Promise<void> => {
+    try {
+      await elevationApi.set(DIRECTION_UP);
       handleAction('up', setUpActionButtonState, setUpIconColorState);
     } catch (error) {
       // TODO: Error handler
     }
-  }
+  };
 
-  const handleDownAction = (): void => {
-    try {      
-      // await elevationApi.set(DIRECTION_DOWN);
+  const handleDownAction = async (): Promise<void> => {
+    try {
+      await elevationApi.set(DIRECTION_DOWN);
       handleAction('down', setDownActionButtonState, setDownIconColorState);
     } catch (error) {
       // TODO: Error handler
     }
-  }
+  };
 
-  const handleFrontAction = (): void => {
-    try {      
-      // await inclinationApi.set(DIRECTION_UP);
+  const handleFrontAction = async (): Promise<void> => {
+    try {
+      await inclinationApi.set(DIRECTION_UP);
       handleAction('front', setFrontActionButtonState, setFrontIconColorState);
     } catch (error) {
       // TODO: Error handler
     }
-  }
+  };
 
-  const handleBackAction = (): void => {
-    try {      
-      // await inclinationApi.set(DIRECTION_DOWN);
+  const handleBackAction = async (): Promise<void> => {
+    try {
+      await inclinationApi.set(DIRECTION_DOWN);
       handleAction('back', setBackActionButtonState, setBackIconColorState);
     } catch (error) {
       // TODO: Error handler
     }
-  }
+  };
 
-  const handleStopAction = (): void => {
-    try {      
-      // await stopApi.get();
+  const handleStopAction = async (): Promise<void> => {
+    try {
+      await stopApi.get();
       resetTimer();
       setDisabledAllActionButton(false, 'grey');
       setStopActionButtonDisabledState(true);
@@ -109,9 +123,12 @@ const ActionButtonGroup = () => {
     } catch (error) {
       // TODO: Error handler
     }
-  }
+  };
 
-  const setDisabledAllActionButton = (disabled: boolean = false, color) => {
+  const setDisabledAllActionButton = (
+    disabled: boolean = false,
+    color: string,
+  ) => {
     setUpActionButtonState(disabled);
     setDownActionButtonState(disabled);
     setFrontActionButtonState(disabled);
@@ -121,21 +138,21 @@ const ActionButtonGroup = () => {
     setDownIconColorState(color);
     setFrontIconColorState(color);
     setBackIconColorState(color);
-  }
+  };
 
   const startTimer = () => {
     setIsStopwatchStart(true);
     setResetStopwatch(false);
-  }
+  };
 
   const resetTimer = () => {
     setIsStopwatchStart(false);
     setResetStopwatch(true);
-  }
+  };
 
   return (
     <View style={styles.container}>
-      <View style={{marginTop: "auto", marginBottom: "auto"}}>
+      <View style={{marginTop: 'auto', marginBottom: 'auto'}}>
         <View style={styles.row}>
           <ActionButton
             action="up"
@@ -144,7 +161,7 @@ const ActionButtonGroup = () => {
             onPress={handleUpAction}
           />
         </View>
-        
+
         <View style={styles.row}>
           <ActionButton
             action="front"
@@ -165,7 +182,7 @@ const ActionButtonGroup = () => {
             onPress={handleBackAction}
           />
         </View>
-        
+
         <View style={styles.row}>
           <ActionButton
             action="down"
@@ -177,17 +194,17 @@ const ActionButtonGroup = () => {
       </View>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
   row: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "center",
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
   },
 });
 
-export default ActionButtonGroup
+export default ActionButtonGroup;

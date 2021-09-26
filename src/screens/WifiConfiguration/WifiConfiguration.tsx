@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import {
   StyleSheet,
   TouchableWithoutFeedback,
+  // ViewStyle,
   View,
 } from 'react-native';
 
@@ -12,7 +13,7 @@ import {
   Icon,
   Input,
   Screen,
-  Spinner,
+  // Spinner,
 } from '../../components';
 import { TouchableIcon } from '../../components/Icon';
 import { InputStatus } from '../../components/Input';
@@ -21,6 +22,13 @@ import { ScreenProps } from '../../navigation/types';
 
 const PAGE_MARGIN: number = 100;
 const FORM_SIZE: number = constants.DEVICE_WIDTH - PAGE_MARGIN * 2;
+
+
+// const LoadingIndicator = (props: { style?: ViewStyle }) => (
+//   <View style={[props.style]}>
+//     <Spinner size='small'/>
+//   </View>
+// );
 
 const WifiConfigurationScreen = ({
   navigation,
@@ -69,8 +77,8 @@ const WifiConfigurationScreen = ({
   }: {
     captionText: string;
     status?: InputStatus;
-    setCaptionMessage: CallableFunction;
-    setInputStatus: CallableFunction;
+    setCaptionMessage: (captionText: string) => void;
+    setInputStatus: (status?: any) => void; // FIX
   }) => {
     setCaptionMessage(captionText);
     setInputStatus(status);
@@ -101,13 +109,13 @@ const WifiConfigurationScreen = ({
     }
   };
 
-  const handleSubmit = () => async () => {
+  const handleSubmit = async (): Promise<void> => {
     if (ssidValue.length === 0) {
       updateInput({
         captionText: 'Wrong password',
         status: 'danger',
-        setSsidCaptionMessage,
-        setInputSsidStatus
+        setCaptionMessage: setSsidCaptionMessage,
+        setInputStatus: setInputSsidStatus
       });
 
       return;
@@ -117,8 +125,8 @@ const WifiConfigurationScreen = ({
       updateInput({
         captionText: 'Wrong password',
         status: 'danger',
-        setPasswordCaptionMessage,
-        setInputPasswordStatus
+        setCaptionMessage: setPasswordCaptionMessage,
+        setInputStatus: setInputPasswordStatus
       });
 
       return;
@@ -128,32 +136,25 @@ const WifiConfigurationScreen = ({
       updateInput({
         captionText: 'Wrong password',
         status: 'danger',
-        setConfirmPasswordCaptionMessage,
-        setInputConfirmPasswordStatus
+        setCaptionMessage: setConfirmPasswordCaptionMessage,
+        setInputStatus: setInputConfirmPasswordStatus
       });
 
       return;
     }
     
     try {
-      // await WifiApi.set(ssidValue, passwordValue);
-
+      await WifiApi.set(ssidValue, passwordValue);
     } catch (error) {
       updateInput({
         captionText: 'Wrong password',
         status: 'danger',
-        setPasswordCaptionMessage,
-        setInputPasswordStatus
+        setCaptionMessage: setPasswordCaptionMessage,
+        setInputStatus: setInputPasswordStatus
       });
     }
     
   };
-
-  const LoadingIndicator = (props) => (
-    <View style={[props.style, styles.indicator]}>
-      <Spinner size='small'/>
-    </View>
-  );
 
   return (
     <Screen>
@@ -198,7 +199,7 @@ const WifiConfigurationScreen = ({
               onPress={handleSubmit}
             >
               <Button
-                accessoryLeft={isLoading && LoadingIndicator}
+                // accessoryLeft={isLoading ? LoadingIndicator : undefined}
                 appearance='outline'
                 style={styles.button}
                 onPress={handleSubmit}
@@ -208,7 +209,7 @@ const WifiConfigurationScreen = ({
               onPress={handleCancel}
             >
               <Button
-                accessoryLeft={isLoading && LoadingIndicator}
+                // accessoryLeft={isLoading ? LoadingIndicator : undefined}
                 status='basic'
                 appearance='outline'
                 style={styles.button}
