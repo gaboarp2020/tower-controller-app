@@ -1,4 +1,4 @@
-import { Icon, IconProps } from '@ui-kitten/components';
+import {Icon, IconProps} from '@ui-kitten/components';
 import React from 'react';
 import {
   TouchableWithoutFeedback,
@@ -6,7 +6,7 @@ import {
   ViewStyle,
 } from 'react-native';
 
-import { RenderProp } from './types';
+import {RenderProp} from './types';
 
 interface TouchableIconProps {
   children: React.ReactNode;
@@ -20,19 +20,22 @@ interface IconPropTypes extends IconProps {
   width?: number;
 }
 
-export const generateIcon = (name: string) => ({
-  fill = '#666',
-  height = 24,
-  width = 24,
-  ...props
-}: IconPropTypes): React.ReactElement<RenderProp<Partial<IconProps>>> => (
-  <Icon
-    {...props}
-    name={name}
-    style={[props.style, { height, width }]}
-    fill={fill}
-  />
-);
+export const generateIcon =
+  (name: string) =>
+  ({
+    fill = '#666',
+    height = 24,
+    width = 24,
+    ...props
+  }: IconPropTypes): React.ReactElement<RenderProp<Partial<IconProps>>> =>
+    (
+      <Icon
+        {...props}
+        name={name}
+        style={[props.style, {height, width}]}
+        fill={fill}
+      />
+    );
 
 export const TouchableIcon = ({
   children,

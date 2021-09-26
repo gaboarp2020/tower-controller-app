@@ -1,6 +1,6 @@
-import { Text } from '@ui-kitten/components';
+import {Text} from '@ui-kitten/components';
 import React from 'react';
-import { ColorValue, StyleSheet, TextProps as RNTextProps } from 'react-native';
+import {ColorValue, StyleSheet, TextProps as RNTextProps} from 'react-native';
 
 /**
  * @property {string} align - Can be `auto`, `center`, `justify`, `left` or `right`
@@ -72,9 +72,8 @@ const CustomText = ({
     appearance={appearance}
     category={category}
     status={status}
-    style={[styles.base, { color, textAlign: align }, style]}
-    {...props}
-  >
+    style={[styles.base, {color, textAlign: align}, style]}
+    {...props}>
     {children}
   </Text>
 );

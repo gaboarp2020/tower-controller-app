@@ -1,6 +1,6 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import {StyleSheet} from 'react-native';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 interface PropsTypes {
   children?: React.ReactNode;
@@ -12,12 +12,11 @@ interface PropsTypes {
  */
 const KeyboardAvoidingView = ({
   children,
-  style = { alignItems: 'center', flexGrow: 1, justifyContent: 'center' },
+  style = {alignItems: 'center', flexGrow: 1, justifyContent: 'center'},
   ...props
 }: PropsTypes): React.ReactElement => {
-  const { alignItems, justifyContent, ...contentStyle } = StyleSheet.flatten(
-    style,
-  );
+  const {alignItems, justifyContent, ...contentStyle} =
+    StyleSheet.flatten(style);
 
   return (
     <KeyboardAwareScrollView
@@ -26,16 +25,18 @@ const KeyboardAvoidingView = ({
       bounces={false}
       bouncesZoom={false}
       enableOnAndroid
-      contentContainerStyle={{ alignItems, flexGrow: 1, justifyContent }}
+      contentContainerStyle={[styles.container, {alignItems, justifyContent}]}
       style={[styles.view, contentStyle]}
-      {...props}
-    >
+      {...props}>
       {children}
     </KeyboardAwareScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flexGrow: 1,
+  },
   view: {
     flex: 1,
   },

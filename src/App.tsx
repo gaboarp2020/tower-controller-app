@@ -1,11 +1,11 @@
 import * as eva from '@eva-design/eva';
-import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
-import { EvaIconsPack } from '@ui-kitten/eva-icons';
-import React, { useEffect } from 'react';
-import { StatusBar, UIManager } from 'react-native';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import {ApplicationProvider, IconRegistry} from '@ui-kitten/components';
+import {EvaIconsPack} from '@ui-kitten/eva-icons';
+import React, {useEffect} from 'react';
+import {StatusBar, UIManager} from 'react-native';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
 import SplashScreen from 'react-native-splash-screen';
-import { RecoilRoot } from 'recoil';
+import {RecoilRoot} from 'recoil';
 
 import constants from '../constants';
 import useHardwareBackButton from './hooks/use-hardware-back-button';

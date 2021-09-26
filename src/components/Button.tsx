@@ -1,4 +1,4 @@
-import { Button, TextProps } from '@ui-kitten/components';
+import {Button, TextProps} from '@ui-kitten/components';
 import React from 'react';
 import {
   FlexStyle,
@@ -8,7 +8,7 @@ import {
   TouchableOpacityProps,
 } from 'react-native';
 
-import { RenderProp } from './types';
+import {RenderProp} from './types';
 
 import Spinner from './Spinner';
 
@@ -94,7 +94,7 @@ const CustomButton = ({
     accessoryLeft={accessoryLeft}
     accessoryRight={accessoryRight}
     appearance={appearance}
-    onPress={(event) => {
+    onPress={event => {
       Keyboard.dismiss();
       onPress && onPress(event);
     }}
@@ -102,11 +102,10 @@ const CustomButton = ({
     status={status}
     style={[
       styles.base,
-      { borderRadius: radius, justifyContent: flexAlignment(align) },
+      {borderRadius: radius, justifyContent: flexAlignment(align)},
       style,
     ]}
-    {...props}
-  >
+    {...props}>
     {loading ? <Spinner animating size={size} status="basic" /> : children}
   </Button>
 );

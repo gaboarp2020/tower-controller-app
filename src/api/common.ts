@@ -7,7 +7,7 @@ import {
   normalizePath,
   withAuthenticationToken,
 } from './helpers';
-import { Query } from './types';
+import {Query} from './types';
 
 const BASE_URL = config.env.apiUrl;
 
@@ -36,7 +36,7 @@ export const request = async <T = any>(
 // Methods
 
 export const get = <T>(url: string, query?: Query) => {
-  const params = query ? qs.stringify(query, { addQueryPrefix: true }) : '';
+  const params = query ? qs.stringify(query, {addQueryPrefix: true}) : '';
 
   return request<T>(`${url}${params}`, {
     headers: getHeaders,

@@ -1,4 +1,4 @@
-import { Input, TextProps } from '@ui-kitten/components';
+import {Input, TextProps} from '@ui-kitten/components';
 import React from 'react';
 import {
   ImageProps,
@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 
 import Text from './Text';
-import { RenderProp } from './types';
+import {RenderProp} from './types';
 
 export type InputSize = 'large' | 'medium' | 'small' | undefined;
 

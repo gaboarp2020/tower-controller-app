@@ -1,29 +1,42 @@
 import React from 'react';
-import {
-  Keyboard,
-  StyleSheet,
-  TouchableOpacityProps,
-} from 'react-native';
+import {Keyboard, StyleSheet, TouchableOpacityProps} from 'react-native';
 
-import { Button } from '.';
-
-import { Icon } from '.';
+import {Button, Icon} from '.';
 
 /**
-* @property {string} action - Actions of the component.
-* Can be `up`, `down`, `front`, `back`, `stop`.
-*
-*/
+ * @property {string} action - Actions of the component.
+ * Can be `up`, `down`, `front`, `back`, `stop`.
+ *
+ */
 
 export interface PropTypes extends TouchableOpacityProps {
-  action:
-    | 'up'
-    | 'down'
-    | 'front'
-    | 'back'
-    | 'stop';
+  action: 'up' | 'down' | 'front' | 'back' | 'stop';
   iconColor: string;
 }
+
+const UpArrowIcon = (iconColor: string) => (
+  <Icon.UpArrow fill={iconColor} style={actionIconStyle} />
+);
+
+const DownArrowIcon = (iconColor: string) => (
+  <Icon.DownArrow fill={iconColor} style={actionIconStyle} />
+);
+
+const FrontArrowIcon = (iconColor: string) => (
+  <Icon.FrontArrow fill={iconColor} style={actionIconStyle} />
+);
+
+const BackArrowIcon = (iconColor: string) => (
+  <Icon.BackArrow fill={iconColor} style={actionIconStyle} />
+);
+
+const StopIcon = (iconColor: string) => (
+  <Icon.Stop fill={iconColor} style={actionIconStyle} />
+);
+
+const actionIconStyle = {
+  marginRigth: 10,
+};
 
 const ActionButton = ({
   action,
@@ -31,20 +44,25 @@ const ActionButton = ({
   onPress,
   ...props
 }: PropTypes): React.ReactElement => {
-
-  const ActionIcon = ({action, iconColor}: {action: string, iconColor: string}) => {
+  const ActionIcon = ({
+    action,
+    iconColor,
+  }: {
+    action: string;
+    iconColor: string;
+  }) => {
     if (action === 'up') {
       return UpArrowIcon(iconColor);
     }
-    
+
     if (action === 'down') {
       return DownArrowIcon(iconColor);
     }
-    
+
     if (action === 'front') {
       return FrontArrowIcon(iconColor);
     }
-    
+
     if (action === 'back') {
       return BackArrowIcon(iconColor);
     }
@@ -52,42 +70,17 @@ const ActionButton = ({
     return StopIcon(iconColor);
   };
 
-  const actionIconStyle = {
-    marginRigth: 10,
-  };
-
-  const UpArrowIcon = (iconColor: string) => (
-    <Icon.UpArrow fill={iconColor} style={actionIconStyle} />
-  );
-
-  const DownArrowIcon = (iconColor: string) => (
-    <Icon.DownArrow fill={iconColor} style={actionIconStyle} />
-  );
-
-  const FrontArrowIcon = (iconColor: string) => (
-    <Icon.FrontArrow fill={iconColor} style={actionIconStyle} />
-  );
-
-  const BackArrowIcon = (iconColor: string) => (
-    <Icon.BackArrow fill={iconColor} style={actionIconStyle} />
-  );
-
-  const StopIcon = (iconColor: string) => (
-    <Icon.Stop fill={iconColor} style={actionIconStyle} />
-  );
-
   return (
     <Button
       appearance="outline"
-      onPress={(event) => {
+      onPress={event => {
         Keyboard.dismiss();
         onPress && onPress(event);
       }}
       size="medium"
-      status="basic" 
+      status="basic"
       style={styles.roundButton}
-      {...props}
-    >
+      {...props}>
       {ActionIcon({action, iconColor})}
     </Button>
   );
@@ -101,7 +94,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderWidth: 2,
     borderRadius: 100,
-    backgroundColor: "white"
+    backgroundColor: 'white',
   },
 });
 

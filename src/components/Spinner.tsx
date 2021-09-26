@@ -1,4 +1,4 @@
-import { Spinner } from '@ui-kitten/components';
+import {Spinner} from '@ui-kitten/components';
 import React from 'react';
 
 /**
