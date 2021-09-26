@@ -1,10 +1,10 @@
-import { get } from './common';
+import {get} from './common';
 
 const BASE_URL = '/save_ap';
 
 const wifiApi = {
   set: (ssid: string, password: string) =>
-    get<void>(BASE_URL, { ssid, password }),
+    get<void>(BASE_URL, {ssid, password}),
 };
 
 export default wifiApi;

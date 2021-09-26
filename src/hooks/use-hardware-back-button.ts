@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
-import { BackHandler, NativeEventSubscription } from 'react-native';
+import {useEffect, useRef, useState} from 'react';
+import {BackHandler, NativeEventSubscription} from 'react-native';
 
 import toastNotification from '../helpers/toast-notification';
 
@@ -33,13 +33,13 @@ const useHardwareBackButton = () => {
     }
 
     if (clickCount < EXIT_CLICKS) {
-      toastNotification('Press again to exit', { cb: () => setClickCount(0) });
+      toastNotification('Press again to exit', {cb: () => setClickCount(0)});
     } else {
       BackHandler.exitApp();
     }
   }, [clickCount]);
 
-  return { clickCount };
+  return {clickCount};
 };
 
 export default useHardwareBackButton;

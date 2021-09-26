@@ -1,4 +1,4 @@
-import { get } from './common';
+import {get} from './common';
 
 const BASE_URL = '/stop';
 

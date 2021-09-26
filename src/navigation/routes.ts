@@ -1,6 +1,6 @@
-import { ComponentType } from 'react';
+import {ComponentType} from 'react';
 
-import { Icon } from '../components';
+import {Icon} from '../components';
 
 import TowerControlScreen from '../screens/TowerControl';
 import WifiConfigurationScreen from '../screens/WifiConfiguration';
@@ -32,6 +32,9 @@ const WIFI_CONFIGURATION: NavigationRoute = {
   name: AppRoutes.WIFI_CONFIGURATION,
 };
 
-export const drawerRoutes: NavigationRoute[] = [TOWER_CONTROL, WIFI_CONFIGURATION];
+export const drawerRoutes: NavigationRoute[] = [
+  TOWER_CONTROL,
+  WIFI_CONFIGURATION,
+];
 
 export default AppRoutes;

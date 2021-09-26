@@ -1,4 +1,4 @@
-import { ToastAndroid } from 'react-native';
+import {ToastAndroid} from 'react-native';
 
 import noop from './noop';
 
@@ -42,8 +42,11 @@ const showToast = (message: string, duration: Duration, gravity: Gravity) => {
  * Defaults to *ToastAndroid.BOTTOM*.
  */
 const toastNotification = (message: string, opts?: ToastOpts) => {
-  const { duration = DURATION_LONG, gravity = GRAVITY_BOTTOM, cb = noop } =
-    opts || {};
+  const {
+    duration = DURATION_LONG,
+    gravity = GRAVITY_BOTTOM,
+    cb = noop,
+  } = opts || {};
 
   showToast(message, duration, gravity);
 

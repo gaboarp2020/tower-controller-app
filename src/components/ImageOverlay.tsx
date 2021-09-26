@@ -51,7 +51,7 @@ export interface ImageURISource {
    * `headers` is an object representing the HTTP headers to send along with the
    * request for a remote image.
    */
-  headers?: { [key: string]: string };
+  headers?: {[key: string]: string};
   /**
    * `cache` determines how the requests handles potentially cached
    * responses.
@@ -107,19 +107,18 @@ const ImageOverlay = ({
   resizeMode = 'cover',
   ...imageBackgroundProps
 }: PropTypes): React.ReactElement<ImageBackgroundProps> => {
-  const { overlayColor, ...imageBackgroundStyle } = StyleSheet.flatten(style);
+  const {overlayColor, ...imageBackgroundStyle} = StyleSheet.flatten(style);
 
   return (
     <ImageBackground
       {...imageBackgroundProps}
       resizeMode={resizeMode}
-      style={[styles.background, imageBackgroundStyle]}
-    >
+      style={[styles.background, imageBackgroundStyle]}>
       <View
         style={[
           StyleSheet.absoluteFill,
           styles.container,
-          { backgroundColor: overlayColor || DEFAULT_OVERLAY_COLOR },
+          {backgroundColor: overlayColor || DEFAULT_OVERLAY_COLOR},
         ]}
       />
       {children}

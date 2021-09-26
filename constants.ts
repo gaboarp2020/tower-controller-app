@@ -1,7 +1,7 @@
-import { Dimensions, Platform } from 'react-native';
+import {Dimensions, Platform} from 'react-native';
 
-const { height: heightWindow, width: widthWindow } = Dimensions.get('window');
-const { height: heightScreen, width: widthScreen } = Dimensions.get('screen');
+const {height: heightWindow, width: widthWindow} = Dimensions.get('window');
+const {height: heightScreen, width: widthScreen} = Dimensions.get('screen');
 
 const IS_ANDROID = Platform.OS === 'android';
 const IS_IOS = Platform.OS === 'ios';
