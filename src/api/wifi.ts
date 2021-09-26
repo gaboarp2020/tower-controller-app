@@ -1,6 +1,6 @@
 import { get } from './common';
 
-const BASE_URL = '/wifi';
+const BASE_URL = '/save_ap';
 
 const wifiApi = {
   set: (ssid: string, password: string) =>
