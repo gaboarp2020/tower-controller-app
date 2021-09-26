@@ -25,7 +25,7 @@ const KeyboardAvoidingView = ({
       bounces={false}
       bouncesZoom={false}
       enableOnAndroid
-      contentContainerStyle={{alignItems, flexGrow: 1, justifyContent}}
+      contentContainerStyle={[styles.container, {alignItems, justifyContent}]}
       style={[styles.view, contentStyle]}
       {...props}>
       {children}
@@ -34,6 +34,9 @@ const KeyboardAvoidingView = ({
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flexGrow: 1,
+  },
   view: {
     flex: 1,
   },

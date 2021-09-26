@@ -29,10 +29,9 @@ const FORM_SIZE: number = constants.DEVICE_WIDTH - PAGE_MARGIN * 2;
 //   </View>
 // );
 
-const WifiConfigurationScreen = ({
-  navigation,
-  route,
-}: ScreenProps<AppRoutes.WIFI_CONFIGURATION>) => {
+const WifiConfigurationScreen = ({}: // navigation,
+// route,
+ScreenProps<AppRoutes.WIFI_CONFIGURATION>) => {
   const [ssidCaptionMessage, setSsidCaptionMessage] = useState<string>('');
   const [passwordCaptionMessage, setPasswordCaptionMessage] =
     useState<string>('');
@@ -46,7 +45,7 @@ const WifiConfigurationScreen = ({
   const [passwordValue, setPasswordValue] = useState<string>('');
   const [confirmPasswordValue, setConfirmPasswordValue] = useState<string>('');
   const [ssidValue, setSsidValue] = useState<string>('');
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  // const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const toggleSecureEntry = () => {
     setSecureTextEntry(!secureTextEntry);

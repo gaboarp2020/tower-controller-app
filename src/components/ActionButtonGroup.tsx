@@ -54,13 +54,12 @@ const ActionButtonGroup = () => {
   const [stopIconColorState, setStopIconColorState] =
     useState<string>('lightgrey');
 
-  const [_actionName, setActionName] = useRecoilState(actionState);
-
-  const [_isStopwatchStart, setIsStopwatchStart] = useRecoilState(
-    isStopwatchStartState,
-  );
-  const [_resetStopwatch, setResetStopwatch] =
-    useRecoilState(resetStopwatchState);
+  // eslint-disable @typescript-eslint/no-unused-vars
+  const [_, setActionName] = useRecoilState(actionState);
+  // eslint-disable @typescript-eslint/no-unused-vars
+  const [__, setIsStopwatchStart] = useRecoilState(isStopwatchStartState);
+  // eslint-disable @typescript-eslint/no-unused-vars
+  const [___, setResetStopwatch] = useRecoilState(resetStopwatchState);
 
   const handleAction = (
     actionName: string,
@@ -152,7 +151,7 @@ const ActionButtonGroup = () => {
 
   return (
     <View style={styles.container}>
-      <View style={{marginTop: 'auto', marginBottom: 'auto'}}>
+      <View style={styles.body}>
         <View style={styles.row}>
           <ActionButton
             action="up"
@@ -197,6 +196,10 @@ const ActionButtonGroup = () => {
 };
 
 const styles = StyleSheet.create({
+  body: {
+    marginBottom: 'auto',
+    marginTop: 'auto',
+  },
   container: {
     flex: 1,
   },

@@ -10,10 +10,9 @@ import {
 import {AppRoutes} from '../../navigation/routes';
 import {ScreenProps} from '../../navigation/types';
 
-const TowerControlScreen = ({
-  navigation,
-  route,
-}: ScreenProps<AppRoutes.HOME>) => {
+const TowerControlScreen = ({}: // navigation,
+// route,
+ScreenProps<AppRoutes.TOWER_CONTROL>) => {
   return (
     <Screen>
       <Screen.Container>
