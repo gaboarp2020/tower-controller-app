@@ -32,7 +32,7 @@ const WifiConfigurationScreen = ({}: ScreenProps<AppRoutes.WIFI_CONFIGURATION>) 
   const [secureTextEntry, setSecureTextEntry] = useState<boolean>(true);
   const [passwordValue, setPasswordValue] = useState<string>('');
   const [ssidValue, setSsidValue] = useState<string>('');
-  const [isLoading, setLoading] = useState<boolean>(true);
+  const [isLoading, setLoading] = useState<boolean>(false);
 
   const toggleSecureEntry = () => {
     setSecureTextEntry(!secureTextEntry);
@@ -132,7 +132,7 @@ const WifiConfigurationScreen = ({}: ScreenProps<AppRoutes.WIFI_CONFIGURATION>) 
       if (isSucceed) {
         toastNotification('¡Credenciales actualizadas!', {duration: 3000});
       } else {
-        toastNotification('Error al actualizar las creedenciales', {duration: 3000});
+        toastNotification('No se pudo actualizar las creedenciales', {duration: 3000});
       }
     });
     setLoading(false);

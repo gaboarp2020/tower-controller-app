@@ -48,47 +48,49 @@ const TowerControlScreen = ({}: ScreenProps<AppRoutes.TOWER_CONTROL>) => {
 
   return (
     <Screen>
-      {isLoading && (
-        <View style={styles.container}>
-          <Spinner animating size="giant" status="info" />
-        </View>              
-      )}
-      {!isLoading && (
-        <Screen.Container>
-          {hasConnectionInterrupt && isModalVisible && (
-            <Modal
-            onCancel={handleCancel}
-            onSubmit={handleSubmit}
-            visible={isModalVisible}
-            >
-              <Text style={styles.marginBottom}>Se ha interrumpido la conexión. ¿Deséa volver a conectarse?</Text>
-              {isReconnecting && (
-                  <View style={styles.container}>
-                    <Spinner animating size="large" status="info" />
-                  </View>              
-                )
-              }
-            </Modal>
-          )}
-          {hasConnectionInterrupt && !isModalVisible && (
-            <View style={styles.interruptedContainer}>
-              <Text align="center" style={styles.marginBottom}>Conexión interrumpida</Text>
-              <Button
-                onPress={() => setModalVisibility(true)}
-                >
-                Verificar conexión
-              </Button>
-            </View>
-          )}
-          {!hasConnectionInterrupt && (
-            <View style={styles.container}>
-              <Timer />
-              <ActionButtonGroup />
-              <ActionMessage />
-            </View>
-          )}
-        </Screen.Container>
-      )}
+      <Screen.Container>
+        {isLoading && (
+          <View style={styles.container}>
+            <Spinner animating size="giant" status="info" />
+          </View>              
+        )}
+        {!isLoading && (
+          <>
+            {isReconnecting && (
+                <View style={styles.container}>
+                  <Spinner animating size="large" status="info" />
+                </View>              
+              )
+            }
+            {!isReconnecting && hasConnectionInterrupt && isModalVisible && (
+              <Modal
+              onCancel={handleCancel}
+              onSubmit={handleSubmit}
+              visible={isModalVisible}
+              >
+                <Text style={styles.marginBottom}>Se ha interrumpido la conexión. ¿Deséa volver a conectarse?</Text>
+              </Modal>
+            )}
+            {hasConnectionInterrupt && !isModalVisible && (
+              <View style={styles.interruptedContainer}>
+                <Text align="center" style={styles.marginBottom}>Conexión interrumpida</Text>
+                <Button
+                  onPress={() => setModalVisibility(true)}
+                  >
+                  Verificar conexión
+                </Button>
+              </View>
+            )}
+            {!hasConnectionInterrupt && (
+              <View style={styles.container}>
+                <Timer />
+                <ActionButtonGroup />
+                <ActionMessage />
+              </View>
+            )}
+          </>
+        )}
+      </Screen.Container>
     </Screen>
   );
 };
