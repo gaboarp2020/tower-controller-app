@@ -86,17 +86,23 @@ const WifiConfigurationScreen = ({}: ScreenProps<AppRoutes.WIFI_CONFIGURATION>) 
 
   const handlePasswordChange = (nextValue: string) => {
     setPasswordValue(nextValue);
-    if (inputPasswordStatus !== undefined) {
-      resetPasswordInput();
-    }
   };
 
   const handleSsidChange = (nextValue: string) => {
     setSsidValue(nextValue);
+  };
+
+  const validateSsidInput = () => {
     if (inputSsidStatus !== undefined) {
       resetSsidInput();
     }
-  };
+  }
+
+  const validatePasswordInput = () => {
+    if (inputPasswordStatus !== undefined) {
+      resetPasswordInput();
+    }
+  }
 
   const handleSubmit = async (): Promise<void> => {
     if (ssidValue.length === 0) {
@@ -141,6 +147,7 @@ const WifiConfigurationScreen = ({}: ScreenProps<AppRoutes.WIFI_CONFIGURATION>) 
               caption={ssidCaptionMessage}
               label="SSID"
               onChangeText={handleSsidChange}
+              onFocus={validateSsidInput}
               placeholder="Ingrese un nuevo SSID"
               status={inputSsidStatus}
               style={styles.input}
@@ -151,6 +158,7 @@ const WifiConfigurationScreen = ({}: ScreenProps<AppRoutes.WIFI_CONFIGURATION>) 
               caption={passwordCaptionMessage}
               label="Contraseña"
               onChangeText={handlePasswordChange}
+              onFocus={validatePasswordInput}
               placeholder="Ingrese una nueva contraseña"
               secureTextEntry={secureTextEntry}
               status={inputPasswordStatus}
