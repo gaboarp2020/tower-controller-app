@@ -76,52 +76,32 @@ const ActionButtonGroup = () => {
   };
 
   const handleUpAction = async (): Promise<void> => {
-    try {
-      await elevationApi.set(DIRECTION_UP);
-      handleAction('up', setUpActionButtonState, setUpIconColorState);
-    } catch (error) {
-      // TODO: Error handler
-    }
+    handleAction('up', setUpActionButtonState, setUpIconColorState);
+    await elevationApi.set(DIRECTION_UP);
   };
 
   const handleDownAction = async (): Promise<void> => {
-    try {
-      await elevationApi.set(DIRECTION_DOWN);
-      handleAction('down', setDownActionButtonState, setDownIconColorState);
-    } catch (error) {
-      // TODO: Error handler
-    }
+    handleAction('down', setDownActionButtonState, setDownIconColorState);
+    await elevationApi.set(DIRECTION_DOWN);
   };
 
   const handleFrontAction = async (): Promise<void> => {
-    try {
-      await inclinationApi.set(DIRECTION_UP);
-      handleAction('front', setFrontActionButtonState, setFrontIconColorState);
-    } catch (error) {
-      // TODO: Error handler
-    }
+    handleAction('front', setFrontActionButtonState, setFrontIconColorState);
+    await inclinationApi.set(DIRECTION_UP);
   };
 
   const handleBackAction = async (): Promise<void> => {
-    try {
-      await inclinationApi.set(DIRECTION_DOWN);
-      handleAction('back', setBackActionButtonState, setBackIconColorState);
-    } catch (error) {
-      // TODO: Error handler
-    }
+    handleAction('back', setBackActionButtonState, setBackIconColorState);
+    await inclinationApi.set(DIRECTION_DOWN);
   };
 
   const handleStopAction = async (): Promise<void> => {
-    try {
-      await stopApi.get();
-      resetTimer();
-      setDisabledAllActionButton(false, 'grey');
-      setStopActionButtonDisabledState(true);
-      setStopIconColorState('lightgrey');
-      setActionName('stop');
-    } catch (error) {
-      // TODO: Error handler
-    }
+    resetTimer();
+    setDisabledAllActionButton(false, 'grey');
+    setStopActionButtonDisabledState(true);
+    setStopIconColorState('lightgrey');
+    setActionName('stop');
+    await stopApi.get();
   };
 
   const setDisabledAllActionButton = (
