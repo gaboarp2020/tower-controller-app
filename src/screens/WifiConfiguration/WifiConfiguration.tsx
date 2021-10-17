@@ -35,15 +35,10 @@ ScreenProps<AppRoutes.WIFI_CONFIGURATION>) => {
   const [ssidCaptionMessage, setSsidCaptionMessage] = useState<string>('');
   const [passwordCaptionMessage, setPasswordCaptionMessage] =
     useState<string>('');
-  const [confirmPasswordCaptionMessage, setConfirmPasswordCaptionMessage] =
-    useState<string>('');
   const [inputSsidStatus, setInputSsidStatus] = useState<InputStatus>();
   const [inputPasswordStatus, setInputPasswordStatus] = useState<InputStatus>();
-  const [inputConfirmPasswordStatus, setInputConfirmPasswordStatus] =
-    useState<InputStatus>();
   const [secureTextEntry, setSecureTextEntry] = useState<boolean>(true);
   const [passwordValue, setPasswordValue] = useState<string>('');
-  const [confirmPasswordValue, setConfirmPasswordValue] = useState<string>('');
   const [ssidValue, setSsidValue] = useState<string>('');
   // const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -60,12 +55,9 @@ ScreenProps<AppRoutes.WIFI_CONFIGURATION>) => {
   const resetInput = () => {
     setSsidCaptionMessage('');
     setPasswordCaptionMessage('');
-    setConfirmPasswordCaptionMessage('');
     setInputSsidStatus(undefined);
     setInputPasswordStatus(undefined);
-    setInputConfirmPasswordStatus(undefined);
     setPasswordValue('');
-    setConfirmPasswordValue('');
     setSsidValue('');
   };
 
@@ -95,13 +87,6 @@ ScreenProps<AppRoutes.WIFI_CONFIGURATION>) => {
     }
   };
 
-  const handleConfirmPasswordChange = (nextValue: string) => {
-    setConfirmPasswordValue(nextValue);
-    if (inputConfirmPasswordStatus !== undefined) {
-      resetInput();
-    }
-  };
-
   const handleSsidChange = (nextValue: string) => {
     setSsidValue(nextValue);
     if (inputSsidStatus !== undefined) {
@@ -127,17 +112,6 @@ ScreenProps<AppRoutes.WIFI_CONFIGURATION>) => {
         status: 'danger',
         setCaptionMessage: setPasswordCaptionMessage,
         setInputStatus: setInputPasswordStatus,
-      });
-
-      return;
-    }
-
-    if (passwordValue !== confirmPasswordValue) {
-      updateInput({
-        captionText: 'Wrong password',
-        status: 'danger',
-        setCaptionMessage: setConfirmPasswordCaptionMessage,
-        setInputStatus: setInputConfirmPasswordStatus,
       });
 
       return;
@@ -179,17 +153,6 @@ ScreenProps<AppRoutes.WIFI_CONFIGURATION>) => {
               status={inputPasswordStatus}
               style={styles.input}
               value={passwordValue}
-            />
-            <Input
-              accessoryRight={eyeIcon}
-              caption={confirmPasswordCaptionMessage}
-              label="Confirmar Contraseña"
-              onChangeText={handleConfirmPasswordChange}
-              placeholder="Repita la contraseña"
-              secureTextEntry={secureTextEntry}
-              status={inputConfirmPasswordStatus}
-              style={styles.input}
-              value={confirmPasswordValue}
             />
           </View>
 
