@@ -8,7 +8,6 @@ export {default as Group} from './Group';
 export {default as Icon} from './Icon';
 export {default as ImageOverlay} from './ImageOverlay';
 export {default as Input} from './Input';
-export {default as KeyboardAvoidingView} from './KeyboardAvoidingView';
 export {default as Modal} from './Modal';
 export {default as Screen} from './Screen';
 export {default as Spinner} from './Spinner';

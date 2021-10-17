@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import {
   StyleSheet,
   TouchableWithoutFeedback,
-  // ViewStyle,
   View,
 } from 'react-native';
 
@@ -13,25 +12,18 @@ import {
   Icon,
   Input,
   Screen,
-  // Spinner,
+  Spinner,
 } from '../../components';
 import {TouchableIcon} from '../../components/Icon';
 import {InputStatus} from '../../components/Input';
 import {AppRoutes} from '../../navigation/routes';
 import {ScreenProps} from '../../navigation/types';
+import toastNotification from '../../helpers/toast-notification';
 
 const PAGE_MARGIN: number = 100;
 const FORM_SIZE: number = constants.DEVICE_WIDTH - PAGE_MARGIN * 2;
 
-// const LoadingIndicator = (props: { style?: ViewStyle }) => (
-//   <View style={[props.style]}>
-//     <Spinner size='small'/>
-//   </View>
-// );
-
-const WifiConfigurationScreen = ({}: // navigation,
-// route,
-ScreenProps<AppRoutes.WIFI_CONFIGURATION>) => {
+const WifiConfigurationScreen = ({}: ScreenProps<AppRoutes.WIFI_CONFIGURATION>) => {
   const [ssidCaptionMessage, setSsidCaptionMessage] = useState<string>('');
   const [passwordCaptionMessage, setPasswordCaptionMessage] =
     useState<string>('');
@@ -40,7 +32,7 @@ ScreenProps<AppRoutes.WIFI_CONFIGURATION>) => {
   const [secureTextEntry, setSecureTextEntry] = useState<boolean>(true);
   const [passwordValue, setPasswordValue] = useState<string>('');
   const [ssidValue, setSsidValue] = useState<string>('');
-  // const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setLoading] = useState<boolean>(true);
 
   const toggleSecureEntry = () => {
     setSecureTextEntry(!secureTextEntry);
@@ -59,6 +51,18 @@ ScreenProps<AppRoutes.WIFI_CONFIGURATION>) => {
     setInputPasswordStatus(undefined);
     setPasswordValue('');
     setSsidValue('');
+  };
+
+  const resetSsidInput = () => {
+    setSsidCaptionMessage('');
+    setInputSsidStatus(undefined);
+    setSsidValue('');
+  };
+
+  const resetPasswordInput = () => {
+    setPasswordCaptionMessage('');
+    setInputPasswordStatus(undefined);
+    setPasswordValue('');
   };
 
   const updateInput = ({
@@ -83,21 +87,21 @@ ScreenProps<AppRoutes.WIFI_CONFIGURATION>) => {
   const handlePasswordChange = (nextValue: string) => {
     setPasswordValue(nextValue);
     if (inputPasswordStatus !== undefined) {
-      resetInput();
+      resetPasswordInput();
     }
   };
 
   const handleSsidChange = (nextValue: string) => {
     setSsidValue(nextValue);
     if (inputSsidStatus !== undefined) {
-      resetInput();
+      resetSsidInput();
     }
   };
 
   const handleSubmit = async (): Promise<void> => {
     if (ssidValue.length === 0) {
       updateInput({
-        captionText: 'Wrong password',
+        captionText: 'Debe agregar el SSID',
         status: 'danger',
         setCaptionMessage: setSsidCaptionMessage,
         setInputStatus: setInputSsidStatus,
@@ -108,7 +112,7 @@ ScreenProps<AppRoutes.WIFI_CONFIGURATION>) => {
 
     if (passwordValue.length === 0) {
       updateInput({
-        captionText: 'Wrong password',
+        captionText: 'Debe agregar una contraseña',
         status: 'danger',
         setCaptionMessage: setPasswordCaptionMessage,
         setInputStatus: setInputPasswordStatus,
@@ -117,16 +121,15 @@ ScreenProps<AppRoutes.WIFI_CONFIGURATION>) => {
       return;
     }
 
-    try {
-      await WifiApi.set(ssidValue, passwordValue);
-    } catch (error) {
-      updateInput({
-        captionText: 'Wrong password',
-        status: 'danger',
-        setCaptionMessage: setPasswordCaptionMessage,
-        setInputStatus: setInputPasswordStatus,
-      });
-    }
+    setLoading(true);
+    await WifiApi.set(ssidValue, passwordValue).then((isSucceed) => {
+      if (isSucceed) {
+        toastNotification('¡Credenciales actualizadas!', {duration: 3000});
+      } else {
+        toastNotification('Error al actualizar las creedenciales', {duration: 3000});
+      }
+    });
+    setLoading(false);
   };
 
   return (
@@ -157,25 +160,28 @@ ScreenProps<AppRoutes.WIFI_CONFIGURATION>) => {
           </View>
 
           <View>
-            <TouchableWithoutFeedback onPress={handleSubmit}>
-              <Button
-                // accessoryLeft={isLoading ? LoadingIndicator : undefined}
-                appearance="outline"
-                style={styles.button}
-                onPress={handleSubmit}>
-                SAVE
-              </Button>
-            </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback onPress={handleCancel}>
-              <Button
-                // accessoryLeft={isLoading ? LoadingIndicator : undefined}
-                status="basic"
-                appearance="outline"
-                style={styles.button}
-                onPress={handleCancel}>
-                RESET
-              </Button>
-            </TouchableWithoutFeedback>
+            {isLoading &&  <Spinner animating size="giant" status="info" />}
+            {!isLoading && (
+              <>
+                <TouchableWithoutFeedback onPress={handleSubmit}>
+                  <Button
+                    appearance="outline"
+                    style={styles.button}
+                    onPress={handleSubmit}>
+                    SAVE
+                  </Button>
+                </TouchableWithoutFeedback>
+                <TouchableWithoutFeedback onPress={handleCancel}>
+                  <Button
+                    status="basic"
+                    appearance="outline"
+                    style={styles.button}
+                    onPress={handleCancel}>
+                    RESET
+                  </Button>
+                </TouchableWithoutFeedback>
+              </>
+            )}
           </View>
         </View>
       </Screen.Container>

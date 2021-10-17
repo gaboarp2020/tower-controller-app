@@ -1,4 +1,5 @@
 import {
+  IconProps,
   Layout,
   TopNavigation,
   TopNavigationAction,
@@ -7,12 +8,11 @@ import React from 'react';
 import {StyleProp, StyleSheet, View, ViewStyle} from 'react-native';
 
 import constants from '../../constants';
-import Icon, {IconProps} from '../components/Icon';
+import Icon from '../components/Icon';
 import Text from '../components/Text';
 import {AppRoutes} from '../navigation/routes';
 import {ScreenProps} from '../navigation/types';
 import ImageOverlay, {ImageSource, OverlayImageStyle} from './ImageOverlay';
-import KeyboardAvoidingView from './KeyboardAvoidingView';
 import {RenderProp} from './types';
 
 export interface ScreenPropTypes {
@@ -49,16 +49,14 @@ const Screen = ({
 }: ScreenPropTypes): React.ReactElement => (
   <Layout level="1" style={[styles.layout]}>
     <ImageOverlay.Wrapper {...imageOverlay}>
-      <KeyboardAvoidingView style={[styles.container, style]}>
-        {React.Children.map(children, (child, key) =>
-          React.isValidElement(child)
-            ? React.cloneElement(child, {
-                key,
-                style: [styles.child, child.props.style],
-              })
-            : child,
-        )}
-      </KeyboardAvoidingView>
+      {React.Children.map(children, (child, key) =>
+        React.isValidElement(child)
+          ? React.cloneElement(child, {
+              key,
+              style: [styles.child, child.props.style],
+            })
+          : child,
+      )}
     </ImageOverlay.Wrapper>
   </Layout>
 );
