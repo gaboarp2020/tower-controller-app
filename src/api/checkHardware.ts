@@ -1,9 +1,9 @@
 import {get} from './common';
 
-const BASE_URL = '/checkHardware';
+const BASE_URL = '/check_hardware';
 
 const checkHardwareApi = {
-  get: () => get<boolean>(BASE_URL),
+  get: () => get<any>(BASE_URL),
 };
 
 export default checkHardwareApi;
