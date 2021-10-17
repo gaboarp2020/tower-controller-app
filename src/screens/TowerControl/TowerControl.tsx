@@ -20,14 +20,14 @@ const TowerControlScreen = ({}: ScreenProps<AppRoutes.TOWER_CONTROL>) => {
   const [isModalVisible, setModalVisibility] = useState<boolean>(true);
   const [hasConnectionInterrupt, setConnectionInterrupt] = useState<boolean>(false);
   const [isReconnecting, setReconnecting] = useState<boolean>(false);
-  const [isLoading, setLoading] = useState<boolean>(true);
+  const [isLoading, setLoading] = useState<boolean>(false);
 
-  checkHardwareApi.get().then((isSucceed) => {
-    if (!isSucceed) {
-      setConnectionInterrupt(true);
-    }
-    setLoading(false);
-  });
+  // checkHardwareApi.get().then((isSucceed) => {
+  //   if (!isSucceed) {
+  //     setConnectionInterrupt(true);
+  //   }
+  //   setLoading(false);
+  // });
 
   const handleCancel = () => {
     setModalVisibility(false);
