@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
+import {useRecoilState} from 'recoil';
 
 import {
   ActionButtonGroup,
@@ -15,19 +16,31 @@ import {AppRoutes} from '../../navigation/routes';
 import {ScreenProps} from '../../navigation/types';
 import checkHardwareApi from '../../api/checkHardware';
 import toastNotification from '../../helpers/toast-notification';
+import {
+  connectionInterruptState,
+  isConnectingState,
+  isStopwatchStartState,
+  resetStopwatchState
+} from '../../components/ActionButtonGroup';
 
 const TowerControlScreen = ({}: ScreenProps<AppRoutes.TOWER_CONTROL>) => {
   const [isModalVisible, setModalVisibility] = useState<boolean>(true);
-  const [hasConnectionInterrupt, setConnectionInterrupt] = useState<boolean>(false);
   const [isReconnecting, setReconnecting] = useState<boolean>(false);
-  const [isLoading, setLoading] = useState<boolean>(false);
+  // eslint-disable @typescript-eslint/no-unused-vars
+  const [hasConnectionInterrupt, setConnectionInterrupt] = useRecoilState(connectionInterruptState);
+  // eslint-disable @typescript-eslint/no-unused-vars
+  const [isLoading, setIsConnecting] = useRecoilState(isConnectingState);
+  // eslint-disable @typescript-eslint/no-unused-vars
+  const [_, setIsStopwatchStart] = useRecoilState(isStopwatchStartState);
+  // eslint-disable @typescript-eslint/no-unused-vars
+  const [___, setResetStopwatch] = useRecoilState(resetStopwatchState);
 
-  // checkHardwareApi.get().then((isSucceed) => {
-  //   if (!isSucceed) {
-  //     setConnectionInterrupt(true);
-  //   }
-  //   setLoading(false);
-  // });
+  checkHardwareApi.get().then((isSucceed) => {
+    if (!isSucceed) {
+      setConnectionInterrupt(true);
+    }
+    setIsConnecting(false);
+  });
 
   const handleCancel = () => {
     setModalVisibility(false);
@@ -38,8 +51,10 @@ const TowerControlScreen = ({}: ScreenProps<AppRoutes.TOWER_CONTROL>) => {
     await checkHardwareApi.get().then((isSucceed) => {
       if (isSucceed) {
         setConnectionInterrupt(false);
+        setIsStopwatchStart(false);
+        setResetStopwatch(true);
       } else {
-        toastNotification('No se pudo reestablecer la conexión', {duration: 3000});
+        toastNotification('No se pudo reestablecer la conexión', {duration: 5000});
       }
     });
     setModalVisibility(false);
@@ -97,6 +112,7 @@ const TowerControlScreen = ({}: ScreenProps<AppRoutes.TOWER_CONTROL>) => {
 
 const styles = StyleSheet.create({
   container: {
+    width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
     flex: 1,
