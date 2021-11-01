@@ -33,7 +33,7 @@ const options = {
     alignItems: 'center',
   },
   text: {
-    fontSize: 25,
+    fontSize: 24,
     color: '#000',
     marginLeft: 7,
   },
@@ -42,7 +42,7 @@ const options = {
 const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
+    flexWrap: 'nowrap',
     justifyContent: 'center',
   },
 });
