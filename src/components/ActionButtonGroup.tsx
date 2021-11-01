@@ -4,6 +4,7 @@ import {atom, useRecoilState} from 'recoil';
 
 import {ActionButton} from '.';
 import {elevationApi, inclinationApi} from '../api/action';
+import checkHardwareApi from '../api/checkHardware';
 import stopApi from '../api/stop';
 
 export const actionState = atom({
@@ -29,6 +30,14 @@ export const resetTimerState = atom({
 export const resetStopwatchState = atom({
   default: false,
   key: 'resetStopwatchState',
+});
+export const connectionInterruptState = atom({
+  default: false,
+  key: 'connectionInterruptState',
+});
+export const isConnectingState = atom({
+  default: false,
+  key: 'isConnectingState',
 });
 
 const ActionButtonGroup = () => {
@@ -60,6 +69,10 @@ const ActionButtonGroup = () => {
   const [__, setIsStopwatchStart] = useRecoilState(isStopwatchStartState);
   // eslint-disable @typescript-eslint/no-unused-vars
   const [___, setResetStopwatch] = useRecoilState(resetStopwatchState);
+  // eslint-disable @typescript-eslint/no-unused-vars
+  const [____, setConnectionInterrupt] = useRecoilState(connectionInterruptState);
+  // eslint-disable @typescript-eslint/no-unused-vars
+  const [_____, setIsConnecting] = useRecoilState(isConnectingState);
 
   const handleAction = (
     actionName: string,
@@ -73,11 +86,21 @@ const ActionButtonGroup = () => {
     setActionStateCallBack(false);
     setIconStateCallBack('grey');
     setActionName(actionName);
+    handleCheck();
   };
 
   const handleUpAction = async (): Promise<void> => {
     handleAction('up', setUpActionButtonState, setUpIconColorState);
     await elevationApi.set(DIRECTION_UP);
+  };
+
+  const handleCheck = async (): Promise<void> => {
+    await checkHardwareApi.get().then((isSucceed) => {
+      if (!isSucceed) {
+        setConnectionInterrupt(true);
+      }
+      setIsConnecting(false);
+    });
   };
 
   const handleDownAction = async (): Promise<void> => {
