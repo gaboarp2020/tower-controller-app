@@ -130,9 +130,9 @@ const WifiConfigurationScreen = ({}: ScreenProps<AppRoutes.WIFI_CONFIGURATION>) 
     setLoading(true);
     await WifiApi.set(ssidValue, passwordValue).then((isSucceed) => {
       if (isSucceed) {
-        toastNotification('¡Credenciales actualizadas!', {duration: 3000});
+        toastNotification('¡Credenciales actualizadas!', {duration: 5000});
       } else {
-        toastNotification('No se pudo actualizar las creedenciales', {duration: 3000});
+        toastNotification('Error de conexión. No se actualizaron las creedenciales', {duration: 5000});
       }
     });
     setLoading(false);
