@@ -86,7 +86,7 @@ const ActionButtonGroup = () => {
     setActionStateCallBack(false);
     setIconStateCallBack('grey');
     setActionName(actionName);
-    handleCheck();
+    // handleCheck();
   };
 
   const handleUpAction = async (): Promise<void> => {

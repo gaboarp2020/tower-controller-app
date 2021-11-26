@@ -35,12 +35,12 @@ const TowerControlScreen = ({}: ScreenProps<AppRoutes.TOWER_CONTROL>) => {
   // eslint-disable @typescript-eslint/no-unused-vars
   const [___, setResetStopwatch] = useRecoilState(resetStopwatchState);
 
-  checkHardwareApi.get().then((isSucceed) => {
-    if (!isSucceed) {
-      setConnectionInterrupt(true);
-    }
-    setIsConnecting(false);
-  });
+  // checkHardwareApi.get().then((isSucceed) => {
+  //   if (!isSucceed) {
+  //     setConnectionInterrupt(true);
+  //   }
+  //   setIsConnecting(false);
+  // });
 
   const handleCancel = () => {
     setModalVisibility(false);
