@@ -7,6 +7,11 @@ import {elevationApi, inclinationApi} from '../api/action';
 import checkHardwareApi from '../api/checkHardware';
 import stopApi from '../api/stop';
 
+const ACTIVE_COLOR = '#FFF';
+const ACTIVE_BACKGROUND = '#109e92';
+const DISABLE_COLOR = 'grey';
+const DISABLE_BACKGROUND = '#FFF';
+
 export const actionState = atom({
   default: 'stop',
   key: 'actionState',
@@ -55,13 +60,21 @@ const ActionButtonGroup = () => {
   const [stopActionButtonDisabledState, setStopActionButtonDisabledState] =
     useState<boolean>(true);
 
-  const [upIconColorState, setUpIconColorState] = useState<string>('grey');
-  const [downIconColorState, setDownIconColorState] = useState<string>('grey');
+  const [upIconColorState, setUpIconColorState] = useState<string>(ACTIVE_COLOR);
+  const [downIconColorState, setDownIconColorState] = useState<string>(ACTIVE_COLOR);
   const [frontIconColorState, setFrontIconColorState] =
-    useState<string>('grey');
-  const [backIconColorState, setBackIconColorState] = useState<string>('grey');
+    useState<string>(ACTIVE_COLOR);
+  const [backIconColorState, setBackIconColorState] = useState<string>(ACTIVE_COLOR);
   const [stopIconColorState, setStopIconColorState] =
-    useState<string>('lightgrey');
+    useState<string>(DISABLE_COLOR);
+
+  const [upBackgroundColorState, setUpBackgroundColorState] = useState<string>(ACTIVE_BACKGROUND);
+  const [downBackgroundColorState, setDownBackgroundColorState] =
+    useState<string>(ACTIVE_BACKGROUND);
+  const [frontBackgroundColorState, setFrontBackgroundColorState] = useState<string>(ACTIVE_BACKGROUND);
+  const [backBackgroundColorState, setBackBackgroundColorState] = useState<string>(ACTIVE_BACKGROUND);
+  const [stopBackgroundColorState, setStopBackgroundColorState] =
+    useState<string>(DISABLE_BACKGROUND);
 
   // eslint-disable @typescript-eslint/no-unused-vars
   const [_, setActionName] = useRecoilState(actionState);
@@ -78,20 +91,18 @@ const ActionButtonGroup = () => {
     actionName: string,
     setActionStateCallBack: CallableFunction,
     setIconStateCallBack: CallableFunction,
+    setBackgroundStateCallBack: CallableFunction,
   ) => {
     startTimer();
-    setDisabledAllActionButton(true, 'lightgrey');
+    setDisabledAllActionButton(true, DISABLE_COLOR, DISABLE_BACKGROUND);
     setStopActionButtonDisabledState(false);
-    setStopIconColorState('grey');
+    setStopIconColorState(ACTIVE_COLOR);
+    setStopBackgroundColorState(ACTIVE_BACKGROUND);
     setActionStateCallBack(false);
-    setIconStateCallBack('grey');
+    setIconStateCallBack(ACTIVE_COLOR);
+    setBackgroundStateCallBack(ACTIVE_BACKGROUND);
     setActionName(actionName);
-    // handleCheck();
-  };
-
-  const handleUpAction = async (): Promise<void> => {
-    handleAction('up', setUpActionButtonState, setUpIconColorState);
-    await elevationApi.set(DIRECTION_UP);
+    handleCheck();
   };
 
   const handleCheck = async (): Promise<void> => {
@@ -103,43 +114,55 @@ const ActionButtonGroup = () => {
     });
   };
 
+  const handleUpAction = async (): Promise<void> => {
+    handleAction('up', setUpActionButtonState, setUpIconColorState, setUpBackgroundColorState);
+    await elevationApi.set(DIRECTION_UP);
+  };
+
   const handleDownAction = async (): Promise<void> => {
-    handleAction('down', setDownActionButtonState, setDownIconColorState);
+    handleAction('down', setDownActionButtonState, setDownIconColorState, setDownBackgroundColorState);
     await elevationApi.set(DIRECTION_DOWN);
   };
 
   const handleFrontAction = async (): Promise<void> => {
-    handleAction('front', setFrontActionButtonState, setFrontIconColorState);
+    handleAction('front', setFrontActionButtonState, setFrontIconColorState, setFrontBackgroundColorState);
     await inclinationApi.set(DIRECTION_UP);
   };
 
   const handleBackAction = async (): Promise<void> => {
-    handleAction('back', setBackActionButtonState, setBackIconColorState);
+    handleAction('back', setBackActionButtonState, setBackIconColorState, setBackBackgroundColorState);
     await inclinationApi.set(DIRECTION_DOWN);
   };
 
   const handleStopAction = async (): Promise<void> => {
     resetTimer();
-    setDisabledAllActionButton(false, 'grey');
+    setDisabledAllActionButton(false, ACTIVE_COLOR, ACTIVE_BACKGROUND);
     setStopActionButtonDisabledState(true);
-    setStopIconColorState('lightgrey');
+    setStopIconColorState(DISABLE_COLOR);
+    setStopBackgroundColorState(DISABLE_BACKGROUND);
     setActionName('stop');
     await stopApi.get();
   };
 
   const setDisabledAllActionButton = (
     disabled: boolean = false,
-    color: string,
+    iconColor: string,
+    backgroundColor: string,
   ) => {
     setUpActionButtonState(disabled);
     setDownActionButtonState(disabled);
     setFrontActionButtonState(disabled);
     setBackActionButtonState(disabled);
 
-    setUpIconColorState(color);
-    setDownIconColorState(color);
-    setFrontIconColorState(color);
-    setBackIconColorState(color);
+    setUpIconColorState(iconColor);
+    setDownIconColorState(iconColor);
+    setFrontIconColorState(iconColor);
+    setBackIconColorState(iconColor);
+
+    setUpBackgroundColorState(backgroundColor);
+    setDownBackgroundColorState(backgroundColor);
+    setFrontBackgroundColorState(backgroundColor);
+    setBackBackgroundColorState(backgroundColor);
   };
 
   const startTimer = () => {
@@ -159,6 +182,7 @@ const ActionButtonGroup = () => {
           <ActionButton
             action="up"
             iconColor={upIconColorState}
+            backgroundColor={upBackgroundColorState}
             disabled={upActionButtonState}
             onPress={handleUpAction}
           />
@@ -168,18 +192,21 @@ const ActionButtonGroup = () => {
           <ActionButton
             action="front"
             iconColor={frontIconColorState}
+            backgroundColor={frontBackgroundColorState}
             disabled={frontActionButtonState}
             onPress={handleFrontAction}
           />
           <ActionButton
             action="stop"
             iconColor={stopIconColorState}
+            backgroundColor={stopBackgroundColorState}
             disabled={stopActionButtonDisabledState}
             onPress={handleStopAction}
           />
           <ActionButton
             action="back"
             iconColor={backIconColorState}
+            backgroundColor={backBackgroundColorState}
             disabled={backActionButtonState}
             onPress={handleBackAction}
           />
@@ -189,6 +216,7 @@ const ActionButtonGroup = () => {
           <ActionButton
             action="down"
             iconColor={downIconColorState}
+            backgroundColor={downBackgroundColorState}
             disabled={downActionButtonState}
             onPress={handleDownAction}
           />

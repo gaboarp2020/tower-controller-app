@@ -29,7 +29,7 @@ const App = (): React.ReactElement => {
   return (
     <RecoilRoot>
       <IconRegistry icons={EvaIconsPack} />
-      <ApplicationProvider {...eva} theme={eva.light}>
+      <ApplicationProvider {...eva} theme={eva.dark}>
         <SafeAreaProvider>
           <StatusBar />
           <MainNavigator />

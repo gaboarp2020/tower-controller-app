@@ -10,7 +10,7 @@ const ActionMessage = () => {
 
   return (
     <View style={styles.row}>
-      <Text align="center" category="h5">
+      <Text align="center" category="h5" style={styles.actionMessage}>
         {actionName.toUpperCase()}
       </Text>
     </View>
@@ -22,6 +22,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
+  },
+  actionMessage: {
+    color: '#FFF'
   },
 });
 

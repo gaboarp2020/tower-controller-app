@@ -34,7 +34,7 @@ const options = {
   },
   text: {
     fontSize: 24,
-    color: '#000',
+    color: '#FFF',
     marginLeft: 7,
   },
 };

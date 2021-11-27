@@ -12,6 +12,7 @@ import {Button, Icon} from '.';
 export interface PropTypes extends TouchableOpacityProps {
   action: 'up' | 'down' | 'front' | 'back' | 'stop';
   iconColor: string;
+  backgroundColor: string;
 }
 
 const UpArrowIcon = (iconColor: string) => (
@@ -41,6 +42,7 @@ const actionIconStyle = {
 const ActionButton = ({
   action,
   iconColor,
+  backgroundColor,
   onPress,
   ...props
 }: PropTypes): React.ReactElement => {
@@ -79,7 +81,7 @@ const ActionButton = ({
       }}
       size="medium"
       status="basic"
-      style={styles.roundButton}
+      style={{...styles.roundButton, backgroundColor}}
       {...props}>
       {ActionIcon({action, iconColor})}
     </Button>
@@ -93,8 +95,7 @@ const styles = StyleSheet.create({
     margin: 16,
     padding: 10,
     borderWidth: 2,
-    borderRadius: 100,
-    backgroundColor: 'white',
+    borderRadius: 100
   },
 });
 

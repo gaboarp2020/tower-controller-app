@@ -20,7 +20,7 @@ interface DrawerItemTitleProps {
 }
 
 const DrawerItemTitle = ({route}: DrawerItemTitleProps) => (
-  <Text appearance="hint" category="h5">
+  <Text appearance="hint" category="h5" color="#FFF">
     {route.name}
   </Text>
 );

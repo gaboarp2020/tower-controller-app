@@ -23,7 +23,7 @@ interface IconPropTypes extends IconProps {
 export const generateIcon =
   (name: string) =>
   ({
-    fill = '#666',
+    fill = '#D3D3D3',
     height = 24,
     width = 24,
     ...props
