@@ -88,7 +88,7 @@ const TowerControlScreen = ({}: ScreenProps<AppRoutes.TOWER_CONTROL>) => {
             )}
             {hasConnectionInterrupt && !isModalVisible && (
               <View style={styles.interruptedContainer}>
-                <Text align="center" style={styles.marginBottom}>Conexión interrumpida</Text>
+                <Text align="center" color="#FFF" style={styles.marginBottom}>Conexión interrumpida</Text>
                 <Button
                   onPress={() => setModalVisibility(true)}
                   >
